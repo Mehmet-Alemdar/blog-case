@@ -6,6 +6,7 @@ const blogSchema = new Schema({
   content: { type: String, required: true, trim: true, minlength: 3},
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true},
   likes: { type: Schema.Types.ObjectId, ref: 'User', default: []},
+  createdAt: { type: Date, default: Date.now},
 })
 
 module.exports = mongoose.model('Blog', blogSchema)
