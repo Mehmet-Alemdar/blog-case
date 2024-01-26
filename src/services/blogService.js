@@ -11,7 +11,7 @@ class BlogService extends BaseService {
   }
 
   async getBlogByUserId(userId) {
-    return await this.getByProperty('userId', userId)
+    return await this.getByProperty('author', userId)
   }
 
   async getBlogsByPage(page, limit) {
