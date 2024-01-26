@@ -11,6 +11,11 @@ class BaseService {
     return await this.model.find()
   }
 
+  async getByPage(page, limit) {
+    const skip = (page - 1) * limit
+    return await this.model.find().skip(skip).limit(limit)
+  }
+
   async getById(id) {
     return await this.model.findById(id)
   }
