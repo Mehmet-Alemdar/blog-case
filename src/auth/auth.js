@@ -22,15 +22,18 @@ const protect = async (req, res, next) => {
   const brearer = req.headers.authorization
 
   if(!brearer) {
-    return res.status(401).json({
+    next({
+      status: 401,
       message: 'Unauthorized'
     })
+    return
   }
 
   const[,token] = brearer.split(' ')
 
   if(!token) {
-    res.status(401).json({
+    next({
+      status: 401,
       message: 'Not valid token'
     })
     return
