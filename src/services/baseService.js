@@ -20,8 +20,12 @@ class BaseService {
     return await this.model.findById(id)
   }
 
-  async getByProperty(property, value) {
+  async getOneByProperty(property, value) {
     return await this.model.findOne({ [property]: value })
+  }
+
+  async getByProperty(property, value) {
+    return await this.model.find({ [property]: value })
   }
 
   async update(id, object) {

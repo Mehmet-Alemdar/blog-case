@@ -11,7 +11,7 @@ class UserService extends BaseService {
   }
 
   async getUserByEmail(email) {
-    return await this.getByProperty('email', email)
+    return await this.getOneByProperty('email', email)
   }
 
   async updateUser(id, obj) {
