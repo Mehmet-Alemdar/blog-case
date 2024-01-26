@@ -13,7 +13,7 @@ const createJWT = (user) => {
   const token = jwt.sign({
     id: user.id,
     email: user.email
-  }, "test secret", { expiresIn: '1m' })
+  }, "test secret", { expiresIn: '1h' })
 
   return token
 }
