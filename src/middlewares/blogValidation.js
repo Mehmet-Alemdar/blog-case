@@ -1,4 +1,9 @@
 const { body, query, param } = require('express-validator')
+const mongoose = require('mongoose')
+
+function isValidObjectId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
 
 const validateBlogPost = [
   body('title')
@@ -10,13 +15,7 @@ const validateBlogPost = [
     .exists().withMessage('Content must exist')
     .notEmpty().withMessage('Content is required')
     .trim()
-    .isLength({ min: 3 }).withMessage('Content must be at least 3 character long'),
-  body('author')
-    .exists().withMessage('Author must exist')
-    .notEmpty().withMessage('Author is required')
-    .trim()
-    .isLength({ min: 24, max: 24 }).withMessage('Incorrect user id format')
-    .escape()
+    .isLength({ min: 3 }).withMessage('Content must be at least 3 character long')
 ]
 
 const validateBlogQuery = [
@@ -41,7 +40,7 @@ const validateBlogUpdate = [
 
 const validateBlogIdParam = [
   param('blogId')
-    .isLength({ min: 24, max: 24 }).withMessage('Incorrect blog id format')
-]
+    .custom(isValidObjectId).withMessage('Incorrect comment id format')
+] 
 
 module.exports = { validateBlogPost, validateBlogQuery, validateBlogUpdate, validateBlogIdParam }

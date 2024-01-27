@@ -10,15 +10,10 @@ const validateCommentPost = [
     .exists().withMessage('Content must exist')
     .trim()
     .isLength({ min: 1 }).withMessage('Content must be at least 1 character long'),
-  body('author')
-    .exists().withMessage('Author must exist')
-    .trim()
-    .isLength({ min: 24, max: 24 }).withMessage('Incorrect blog id format')
-    .escape(),
   body('blog')
     .exists().withMessage('Blog must exist')
     .trim()
-    .isLength({ min: 24, max: 24 }).withMessage('Incorrect blog id format')
+    .custom(isValidObjectId).withMessage('Incorrect comment id format')
     .escape()
 ]
 

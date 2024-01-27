@@ -8,15 +8,9 @@ const BlogService = require('../services/blogService')
 router.post('/', validateBlogPost, handleInputError, async (req, res, next) => {
   try {
     const obj = req.body
-    if(obj.author != req.user.id) {
-      next({
-        status: 401,
-        message: 'Unauthorized'
-      })
-      return
-    }
+    const userId = req.user.id
 
-    const user = await UserService.getUserById(obj.author)
+    const user = await UserService.getUserById(userId)
     if(!user) {
       next({
         status: 404,
@@ -25,6 +19,7 @@ router.post('/', validateBlogPost, handleInputError, async (req, res, next) => {
       return
     }
 
+    obj.author = user._id
     const blog = await BlogService.createBlog(obj)
 
     res.status(201).send({message: 'Blog created successfully', blog})
@@ -70,6 +65,8 @@ router.get('/:blogId', validateBlogIdParam, handleInputError, async (req, res, n
 router.patch('/:blogId', validateBlogIdParam, validateBlogUpdate, handleInputError, async (req, res, next) => {
   try {
     const { blogId } = req.params
+    const userId = req.user.id
+
     const blog = await BlogService.getBlogById(blogId)
     if(!blog) {
       next({
@@ -79,7 +76,7 @@ router.patch('/:blogId', validateBlogIdParam, validateBlogUpdate, handleInputErr
       return
     }
 
-    if(blog.author._id != req.user.id) {
+    if(blog.author._id.toString() != userId) {
       next({
         status: 401,
         message: 'Unauthorized'
@@ -107,6 +104,8 @@ router.patch('/:blogId', validateBlogIdParam, validateBlogUpdate, handleInputErr
 router.delete('/:blogId', validateBlogIdParam, handleInputError, async (req, res, next) => {
   try {
     const { blogId } = req.params
+    const userId = req.user.id
+
     const blog = await BlogService.getBlogById(blogId)
     if(!blog) {
       next({
@@ -116,7 +115,7 @@ router.delete('/:blogId', validateBlogIdParam, handleInputError, async (req, res
       return
     }
 
-    if(blog.author._id != req.user.id) {
+    if(blog.author._id.toString() != userId) {
       next({
         status: 401,
         message: 'Unauthorized'

@@ -8,16 +8,9 @@ const UserService = require('../services/userService')
 router.post('/', validateCommentPost, handleInputError, async (req, res, next) => {
   try {
     const obj = req.body
+    const userId = req.user.id
 
-    if(obj.author != req.user.id) {
-      next({
-        status: 401,
-        message: 'Unauthorized'
-      })
-      return
-    }
-
-    const user = await UserService.getUserById(obj.author)
+    const user = await UserService.getUserById(userId)
     if(!user) {
       next({
         status: 404,
@@ -35,9 +28,10 @@ router.post('/', validateCommentPost, handleInputError, async (req, res, next) =
       return
     }
     
+    obj.author = user._id
     const comment = await CommentService.createComment(obj)
 
-    res.status(201).json(comment)
+    res.status(201).json({message: 'Comment created successfully', comment})
   } catch(err) {
     next(err)
   }
@@ -88,6 +82,8 @@ router.get('/user/:id', validateCommentIdParam, handleInputError, async (req, re
 router.patch('/:id', validateCommentIdParam, validateCommentUpdate, handleInputError, async (req, res, next) => {
   try {
     const { id } = req.params
+    const userId = req.user.id
+
     const comment = await CommentService.getCommentById(id)
     if(!comment) {
       next({
@@ -97,7 +93,7 @@ router.patch('/:id', validateCommentIdParam, validateCommentUpdate, handleInputE
       return
     }
 
-    if(comment.author._id.toString() !== req.user.id) {
+    if(comment.author._id.toString() !== userId) {
       next({
         status: 403,
         message: 'You are not allowed to update this comment'
@@ -108,7 +104,7 @@ router.patch('/:id', validateCommentIdParam, validateCommentUpdate, handleInputE
     const { content } = req.body
     const updatedComment = await CommentService.updateComment(id, { content })
 
-    res.status(200).json(updatedComment)
+    res.status(200).json({message: 'Comment updated successfully', updatedComment})
   } catch(err) {
     next(err)
   }
@@ -117,6 +113,8 @@ router.patch('/:id', validateCommentIdParam, validateCommentUpdate, handleInputE
 router.delete('/:id', validateCommentIdParam, handleInputError, async (req, res, next) => {
   try {
     const { id } = req.params
+    const userId = req.user.id
+
     const comment = await CommentService.getCommentById(id)
     if(!comment) {
       next({
@@ -126,7 +124,7 @@ router.delete('/:id', validateCommentIdParam, handleInputError, async (req, res,
       return
     }
 
-    if(comment.author._id.toString() !== req.user.id) {
+    if(comment.author._id.toString() !== userId) {
       next({
         status: 403,
         message: 'You are not allowed to delete this comment'
