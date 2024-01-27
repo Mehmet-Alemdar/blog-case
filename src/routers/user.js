@@ -80,7 +80,7 @@ router.patch('/update', protect, validateUserUpdate, handleInputError, async (re
 
     const updatedUser = await UserService.updateUser(id, {name, profilePicture, age})
 
-    res.status(200).send({message: 'User updated successfully', user: updatedUser})
+    res.status(200).send({message: 'User updated successfully', user: {name: updatedUser.name, email: updatedUser.email, profilePicture: updatedUser.profilePicture, age: updatedUser.age}})
   } catch(err) {
     next(err)
   }
@@ -113,7 +113,7 @@ router.patch('/change-password', protect, validateUserPasswordUpdate, handleInpu
     const hashedPassword = await hashPassword(newPassword)
     const updatedUser = await UserService.updateUser(id, {password: hashedPassword})
 
-    res.status(200).send({message: 'Password updated successfully', user: updatedUser})
+    res.status(200).send({message: 'Password updated successfully'})
   } catch(err) {
     next(err)
   }
