@@ -6,6 +6,7 @@ const UserService = require('../services/userService')
 const User = require('../models/user')
 const { comparePassword, hashPassword, createJWT } = require('../auth/auth.js')
 
+// create user
 router.post('/register', validateRegister, handleInputError, async (req, res, next) => {
   try {
     const obj = req.body
@@ -23,6 +24,7 @@ router.post('/register', validateRegister, handleInputError, async (req, res, ne
   }
 })
 
+// login user
 router.post('/login', validateLogin, handleInputError, async (req, res, next) => {
   try {
     const { email, password } = req.body
@@ -53,6 +55,7 @@ router.post('/login', validateLogin, handleInputError, async (req, res, next) =>
   }
 })
 
+// update user
 router.patch('/update', protect, validateUserUpdate, handleInputError, async (req, res, next) => {
   try {
     const {name, profilePicture, age} = req.body
@@ -83,6 +86,7 @@ router.patch('/update', protect, validateUserUpdate, handleInputError, async (re
   }
 })
 
+// user password update
 router.patch('/change-password', protect, validateUserPasswordUpdate, handleInputError, async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body
@@ -110,6 +114,28 @@ router.patch('/change-password', protect, validateUserPasswordUpdate, handleInpu
     const updatedUser = await UserService.updateUser(id, {password: hashedPassword})
 
     res.status(200).send({message: 'Password updated successfully', user: updatedUser})
+  } catch(err) {
+    next(err)
+  }
+})
+
+// delete user
+router.delete('/delete', protect, async (req, res, next) => {
+  try {
+    const id = req.user.id
+
+    const user = await UserService.getUserById(id)
+    if(!user) {
+      next({
+        status: 404,
+        message: 'User not found'
+      })
+      return
+    }
+
+    await UserService.deleteUser(id)
+
+    res.status(200).send({message: 'User deleted successfully'})
   } catch(err) {
     next(err)
   }

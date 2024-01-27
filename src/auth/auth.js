@@ -1,14 +1,17 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+// compare password
 const comparePassword = (password, hash) => {
   return bcrypt.compare(password, hash)
 }
 
+// hash password
 const hashPassword = (password) => {
   return bcrypt.hash(password, 5)
 }
 
+// create jwt token
 const createJWT = (user) => {
   const token = jwt.sign({
     id: user.id,
@@ -18,18 +21,9 @@ const createJWT = (user) => {
   return token
 }
 
+// protect routes
 const protect = async (req, res, next) => {
-  const brearer = req.headers.authorization
-
-  if(!brearer) {
-    next({
-      status: 401,
-      message: 'Unauthorized'
-    })
-    return
-  }
-
-  const[,token] = brearer.split(' ')
+  const token = req.headers.authorization
 
   if(!token) {
     next({

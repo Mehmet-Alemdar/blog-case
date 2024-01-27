@@ -6,6 +6,7 @@ const CommentService = require('../services/commentService')
 const BlogService = require('../services/blogService')
 const UserService = require('../services/userService')
 
+// create comment
 router.post('/', protect, validateCommentPost, handleInputError, async (req, res, next) => {
   try {
     const obj = req.body
@@ -38,6 +39,7 @@ router.post('/', protect, validateCommentPost, handleInputError, async (req, res
   }
 })
 
+// get comments by blog id
 router.get('/blog/:blogId', validateObjectIdParam("blogId"), handleInputError, async (req, res, next) => {
   try {
     const { blogId } = req.params
@@ -59,6 +61,7 @@ router.get('/blog/:blogId', validateObjectIdParam("blogId"), handleInputError, a
   }
 })
 
+// get comments by user id
 router.get('/user/:userId', validateObjectIdParam("userId"), handleInputError, async (req, res, next) => {
   try {
     const { userId } = req.params
@@ -80,6 +83,7 @@ router.get('/user/:userId', validateObjectIdParam("userId"), handleInputError, a
   }
 })
 
+// update comment
 router.patch('/:commentId', protect, validateObjectIdParam("commentId"), validateCommentUpdate, handleInputError, async (req, res, next) => {
   try {
     const { commentId } = req.params
@@ -111,6 +115,7 @@ router.patch('/:commentId', protect, validateObjectIdParam("commentId"), validat
   }
 })
 
+// like comment
 router.patch('/like/:commentId', protect, validateObjectIdParam("commentId"), handleInputError, async (req, res, next) => {
   try{
     const { commentId } = req.params
@@ -150,6 +155,7 @@ router.patch('/like/:commentId', protect, validateObjectIdParam("commentId"), ha
   }
 })
 
+// delete comment
 router.delete('/:commentId', protect, validateObjectIdParam("commentId"), handleInputError, async (req, res, next) => {
   try {
     const { commentId } = req.params

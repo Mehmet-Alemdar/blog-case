@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 
+// return error for validations
 const handleInputError = (req, res, next) => {
   const errors = validationResult(req)
   if(!errors.isEmpty()) {

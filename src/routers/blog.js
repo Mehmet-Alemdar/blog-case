@@ -114,6 +114,7 @@ router.patch('/:blogId', protect, validateBlogIdParam, validateBlogUpdate, handl
   }
 })
 
+// like blog
 router.patch('/like/:blogId', protect, validateBlogIdParam, handleInputError, async (req, res, next) => {
   try{
     const { blogId } = req.params
