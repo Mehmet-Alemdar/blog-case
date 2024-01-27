@@ -112,9 +112,9 @@ npm run watch
 > GET http://localhost:3000/blog/:blogId
 > ````
 ### Search blog
-> + limit and page queries are optional
+> + searches by title
 > ```http
-> GET http://localhost:3000/blog/search?limit=2&page=3
+> GET http://localhost:3000/blog/search?q=sample
 > ````
 ### Update blog by blog id
 > **⚠ Add the token information returned from the API to the headers.**
