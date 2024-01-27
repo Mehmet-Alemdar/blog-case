@@ -1,11 +1,12 @@
 const router = require('express').Router()
+const { protect } = require('../auth/auth')
 const { validateBlogPost, validateBlogQuery, validateBlogUpdate, validateBlogIdParam } = require('../middlewares/blogValidation')
 const { handleInputError } = require('../middlewares/handleInputError')
 const UserService = require('../services/userService')
 const BlogService = require('../services/blogService')
 
 // create blog
-router.post('/', validateBlogPost, handleInputError, async (req, res, next) => {
+router.post('/', protect, validateBlogPost, handleInputError, async (req, res, next) => {
   try {
     const obj = req.body
     const userId = req.user.id
@@ -62,7 +63,7 @@ router.get('/:blogId', validateBlogIdParam, handleInputError, async (req, res, n
 })
 
 // update blog
-router.patch('/:blogId', validateBlogIdParam, validateBlogUpdate, handleInputError, async (req, res, next) => {
+router.patch('/:blogId', protect, validateBlogIdParam, validateBlogUpdate, handleInputError, async (req, res, next) => {
   try {
     const { blogId } = req.params
     const userId = req.user.id
@@ -101,7 +102,7 @@ router.patch('/:blogId', validateBlogIdParam, validateBlogUpdate, handleInputErr
 })
 
 // delete blog
-router.delete('/:blogId', validateBlogIdParam, handleInputError, async (req, res, next) => {
+router.delete('/:blogId', protect, validateBlogIdParam, handleInputError, async (req, res, next) => {
   try {
     const { blogId } = req.params
     const userId = req.user.id

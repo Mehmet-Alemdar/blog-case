@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/user', user)
-app.use('/blog', protect, blog)
+app.use('/blog', blog)
 app.use('/comment', protect, comment)
 app.use(errorHandler)
 
