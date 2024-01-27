@@ -58,6 +58,14 @@ router.patch('/update', protect, validateUserUpdate, handleInputError, async (re
     const {name, profilePicture, age} = req.body
     const id = req.user.id
 
+    if(!name && !profilePicture && !age) {
+      next({
+        status: 400,
+        message: 'Nothing to update'
+      })
+      return
+    }
+
     const user = await UserService.getUserById(id)
     if(!user) {
       next({

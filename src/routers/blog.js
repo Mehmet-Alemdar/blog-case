@@ -42,6 +42,7 @@ router.get('/', validateBlogQuery, handleInputError, async (req, res, next) => {
   }
 })
 
+// search blogs by title
 router.get('/search', validateBlogSearchQuery, handleInputError, async (req, res, next) => {
   try {
     const query = req.query.q
@@ -92,7 +93,7 @@ router.patch('/:blogId', protect, validateBlogIdParam, validateBlogUpdate, handl
     if(blog.author._id.toString() != userId) {
       next({
         status: 401,
-        message: 'Unauthorized'
+        message: 'You are not allowed to update this blog'
       })
       return
     }
@@ -158,6 +159,8 @@ router.delete('/:blogId', protect, validateBlogIdParam, handleInputError, async 
     const { blogId } = req.params
     const userId = req.user.id
 
+    console.log(blogId, userId)
+
     const blog = await BlogService.getBlogById(blogId)
     if(!blog) {
       next({
@@ -170,7 +173,7 @@ router.delete('/:blogId', protect, validateBlogIdParam, handleInputError, async 
     if(blog.author._id.toString() != userId) {
       next({
         status: 401,
-        message: 'Unauthorized'
+        message: 'You are not allowed to delete this blog'
       })
       return
     }
