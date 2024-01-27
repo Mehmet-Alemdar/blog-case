@@ -47,4 +47,37 @@ const validateRegister = [
     .escape()
 ]
 
-module.exports = { validateLogin, validateRegister }
+const validateUserUpdate = [
+  body('name')
+    .optional()
+    .trim()
+    .isLength({ min: 2 }).withMessage('Name must be at least 2 character long')
+    .escape(),
+  body('age')
+    .optional()
+    .trim()
+    .isInt({ min: 0 }).withMessage('Age must be a positive number')
+    .escape(),
+  body('profilePicture')
+    .optional()
+    .trim()
+    .isURL().withMessage('Profile picture must be a valid URL')
+    .escape()
+]
+
+const validateUserPasswordUpdate = [
+  body('oldPassword')
+    .exists().withMessage('Old password must exist')
+    .notEmpty().withMessage('Old password is required')
+    .trim()
+    .isLength({ min: 6 }).withMessage('Old password must be at least 6 character long')
+    .escape(),
+  body('newPassword')
+    .exists().withMessage('Password must exist')
+    .notEmpty().withMessage('Password is required')
+    .trim()
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 character long')
+    .escape()
+]
+
+module.exports = { validateLogin, validateRegister, validateUserUpdate, validateUserPasswordUpdate }
