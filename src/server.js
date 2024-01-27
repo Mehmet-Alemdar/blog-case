@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const  {errorHandler}  = require('./middlewares/errorHandler')
 require('../mongoConnection')
 const user = require('./routers/user')
@@ -7,6 +8,7 @@ const comment = require('./routers/comment')
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 
 app.get('/', (req, res) => {
