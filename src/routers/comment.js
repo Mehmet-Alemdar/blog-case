@@ -1,11 +1,12 @@
 const router = require('express').Router()
+const { protect } = require('../auth/auth')
 const { validateCommentPost, validateCommentIdParam, validateCommentUpdate } = require('../middlewares/commentValidation')
 const { handleInputError } = require('../middlewares/handleInputError')
 const CommentService = require('../services/commentService')
 const BlogService = require('../services/blogService')
 const UserService = require('../services/userService')
 
-router.post('/', validateCommentPost, handleInputError, async (req, res, next) => {
+router.post('/', protect, validateCommentPost, handleInputError, async (req, res, next) => {
   try {
     const obj = req.body
     const userId = req.user.id
@@ -79,7 +80,7 @@ router.get('/user/:id', validateCommentIdParam, handleInputError, async (req, re
   }
 })
 
-router.patch('/:id', validateCommentIdParam, validateCommentUpdate, handleInputError, async (req, res, next) => {
+router.patch('/:id', protect, validateCommentIdParam, validateCommentUpdate, handleInputError, async (req, res, next) => {
   try {
     const { id } = req.params
     const userId = req.user.id
@@ -110,7 +111,7 @@ router.patch('/:id', validateCommentIdParam, validateCommentUpdate, handleInputE
   }
 })
 
-router.delete('/:id', validateCommentIdParam, handleInputError, async (req, res, next) => {
+router.delete('/:id', protect, validateCommentIdParam, handleInputError, async (req, res, next) => {
   try {
     const { id } = req.params
     const userId = req.user.id

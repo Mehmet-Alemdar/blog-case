@@ -1,6 +1,5 @@
 const express = require('express')
 const  {errorHandler}  = require('./middlewares/errorHandler')
-const { protect } = require('./auth/auth')
 require('../mongoConnection')
 const user = require('./routers/user')
 const blog = require('./routers/blog')
@@ -16,7 +15,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', user)
 app.use('/blog', blog)
-app.use('/comment', protect, comment)
+app.use('/comment', comment)
 app.use(errorHandler)
 
 module.exports = { app }
