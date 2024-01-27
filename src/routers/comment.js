@@ -111,6 +111,45 @@ router.patch('/:commentId', protect, validateObjectIdParam("commentId"), validat
   }
 })
 
+router.patch('/like/:commentId', protect, validateObjectIdParam("commentId"), handleInputError, async (req, res, next) => {
+  try{
+    const { commentId } = req.params
+    const userId = req.user.id
+
+    const user = await UserService.getUserById(userId)
+    if(!user) {
+      next({
+        status: 404,
+        message: 'User not found'
+      })
+      return
+    }
+
+    const comment = await CommentService.getCommentById(commentId)
+    if(!comment) {
+      next({
+        status: 404,
+        message: 'Comment not found'
+      })
+      return
+    }
+
+    const isLiked = comment.likes.includes(userId)
+
+    if(isLiked) {
+      await CommentService.unlikeComment(commentId, userId)
+      res.status(200).json({message: 'Comment unliked successfully'})
+      return
+    } else {
+      await CommentService.likeComment(commentId, userId)
+      res.status(200).json({message: 'Comment liked successfully'})
+      return
+    }
+  }catch(err) {
+    next(err)
+  }
+})
+
 router.delete('/:commentId', protect, validateObjectIdParam("commentId"), handleInputError, async (req, res, next) => {
   try {
     const { commentId } = req.params

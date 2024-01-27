@@ -25,6 +25,14 @@ class CommentService extends BaseService {
   async deleteComment(id) {
     return await this.delete(id)
   }
+
+  async likeComment(id, userId) {
+    return await this.update(id, { $addToSet: { likes: userId } })
+  }
+
+  async unlikeComment(id, userId) {
+    return await this.update(id, { $pull: { likes: userId } })
+  }
 }
 
 module.exports = new CommentService(Comment)
