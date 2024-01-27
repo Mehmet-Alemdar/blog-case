@@ -101,6 +101,45 @@ router.patch('/:blogId', protect, validateBlogIdParam, validateBlogUpdate, handl
   }
 })
 
+router.patch('/like/:blogId', protect, validateBlogIdParam, handleInputError, async (req, res, next) => {
+  try{
+    const { blogId } = req.params
+    const userId = req.user.id
+
+    const user = await UserService.getUserById(userId)
+    if(!user) {
+      next({
+        status: 404,
+        message: 'User not found'
+      })
+      return
+    }
+
+    const blog = await BlogService.getBlogById(blogId)
+    if(!blog) {
+      next({
+        status: 404,
+        message: 'Blog not found'
+      })
+      return
+    }
+
+    const isLiked = blog.likes.includes(userId)
+
+    if(isLiked) {
+      await BlogService.unlikeBlog(blogId, userId)
+      res.status(200).send({message: 'Blog unliked successfully'})
+      return
+    } else {
+      await BlogService.likeBlog(blogId, userId)
+      res.status(200).send({message: 'Blog liked successfully'})
+      return
+    }
+  } catch(err) {
+    next(err)
+  }
+})
+
 // delete blog
 router.delete('/:blogId', protect, validateBlogIdParam, handleInputError, async (req, res, next) => {
   try {

@@ -25,6 +25,14 @@ class BlogService extends BaseService {
   async deleteBlog(id) {
     return await this.delete(id)
   }
+
+  async likeBlog(id, userId) {
+    return await this.update(id, { $addToSet: { likes: userId } })
+  }
+
+  async unlikeBlog(id, userId) {
+    return await this.update(id, { $pull: { likes: userId } })
+  }
 }
 
 module.exports = new BlogService(Blog)
