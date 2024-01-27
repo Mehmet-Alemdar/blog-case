@@ -17,13 +17,15 @@ const validateCommentPost = [
     .escape()
 ]
 
-const validateCommentIdParam = [
-  param('id')
-    .custom(isValidObjectId).withMessage('Incorrect comment id format')
-    .exists().withMessage('Blog id must exist')
-    .trim()
-    .escape()
-]
+function validateObjectIdParam(paramName) {
+  return [
+    param(paramName)
+      .custom(isValidObjectId).withMessage(`Incorrect ${paramName} format`)
+      .exists().withMessage(`${paramName} must exist`)
+      .trim()
+      .escape()
+  ];
+}
 
 const validateCommentUpdate = [
   body('content')
@@ -32,4 +34,4 @@ const validateCommentUpdate = [
     .isLength({ min: 1 }).withMessage('Content must be at least 1 character long')
 ]
 
-module.exports = { validateCommentPost, validateCommentIdParam, validateCommentUpdate }
+module.exports = { validateCommentPost, validateObjectIdParam, validateCommentUpdate }

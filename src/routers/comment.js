@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { protect } = require('../auth/auth')
-const { validateCommentPost, validateCommentIdParam, validateCommentUpdate } = require('../middlewares/commentValidation')
+const { validateCommentPost, validateObjectIdParam, validateCommentUpdate } = require('../middlewares/commentValidation')
 const { handleInputError } = require('../middlewares/handleInputError')
 const CommentService = require('../services/commentService')
 const BlogService = require('../services/blogService')
@@ -38,11 +38,11 @@ router.post('/', protect, validateCommentPost, handleInputError, async (req, res
   }
 })
 
-router.get('/blog/:id', validateCommentIdParam, handleInputError, async (req, res, next) => {
+router.get('/blog/:blogId', validateObjectIdParam("blogId"), handleInputError, async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { blogId } = req.params
 
-    const blog = await BlogService.getBlogById(id)
+    const blog = await BlogService.getBlogById(blogId)
     if(!blog) {
       next({
         status: 404,
@@ -51,7 +51,7 @@ router.get('/blog/:id', validateCommentIdParam, handleInputError, async (req, re
       return
     }
 
-    const comments = await CommentService.getCommentsByBlogId(id)
+    const comments = await CommentService.getCommentsByBlogId(blogId)
 
     res.status(200).json(comments)
   } catch(err) {
@@ -59,11 +59,11 @@ router.get('/blog/:id', validateCommentIdParam, handleInputError, async (req, re
   }
 })
 
-router.get('/user/:id', validateCommentIdParam, handleInputError, async (req, res, next) => {
+router.get('/user/:userId', validateObjectIdParam("userId"), handleInputError, async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { userId } = req.params
 
-    const user = await UserService.getUserById(id)
+    const user = await UserService.getUserById(userId)
     if(!user) {
       next({
         status: 404,
@@ -72,7 +72,7 @@ router.get('/user/:id', validateCommentIdParam, handleInputError, async (req, re
       return
     }
 
-    const comments = await CommentService.getCommentsByUserId(id)
+    const comments = await CommentService.getCommentsByUserId(userId)
 
     res.status(200).json(comments)
   } catch(err) {
@@ -80,12 +80,12 @@ router.get('/user/:id', validateCommentIdParam, handleInputError, async (req, re
   }
 })
 
-router.patch('/:id', protect, validateCommentIdParam, validateCommentUpdate, handleInputError, async (req, res, next) => {
+router.patch('/:commentId', protect, validateObjectIdParam("commentId"), validateCommentUpdate, handleInputError, async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { commentId } = req.params
     const userId = req.user.id
 
-    const comment = await CommentService.getCommentById(id)
+    const comment = await CommentService.getCommentById(commentId)
     if(!comment) {
       next({
         status: 404,
@@ -103,7 +103,7 @@ router.patch('/:id', protect, validateCommentIdParam, validateCommentUpdate, han
     }
 
     const { content } = req.body
-    const updatedComment = await CommentService.updateComment(id, { content })
+    const updatedComment = await CommentService.updateComment(commentId, { content })
 
     res.status(200).json({message: 'Comment updated successfully', updatedComment})
   } catch(err) {
@@ -111,12 +111,12 @@ router.patch('/:id', protect, validateCommentIdParam, validateCommentUpdate, han
   }
 })
 
-router.delete('/:id', protect, validateCommentIdParam, handleInputError, async (req, res, next) => {
+router.delete('/:commentId', protect, validateObjectIdParam("commentId"), handleInputError, async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { commentId } = req.params
     const userId = req.user.id
 
-    const comment = await CommentService.getCommentById(id)
+    const comment = await CommentService.getCommentById(commentId)
     if(!comment) {
       next({
         status: 404,
@@ -133,7 +133,7 @@ router.delete('/:id', protect, validateCommentIdParam, handleInputError, async (
       return
     }
 
-    await CommentService.deleteComment(id)
+    await CommentService.deleteComment(commentId)
 
     res.status(200).json({message: 'Comment deleted successfully'})
   } catch(err) {
