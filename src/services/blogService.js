@@ -33,6 +33,10 @@ class BlogService extends BaseService {
   async unlikeBlog(id, userId) {
     return await this.update(id, { $pull: { likes: userId } })
   }
+
+  async searchBlogByTitle(query) {
+    return await this.search("title", query);
+  }
 }
 
 module.exports = new BlogService(Blog)

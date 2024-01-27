@@ -35,6 +35,10 @@ class BaseService {
   async delete(id) {
     return await this.model.findByIdAndDelete(id)
   }
+
+  async search(property, value) {
+    return await this.model.find({ [property]: { $regex: value, $options: 'i' } });
+  }
 }
 
 module.exports = BaseService

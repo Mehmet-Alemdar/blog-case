@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { protect } = require('../auth/auth')
-const { validateBlogPost, validateBlogQuery, validateBlogUpdate, validateBlogIdParam } = require('../middlewares/blogValidation')
+const { validateBlogPost, validateBlogQuery, validateBlogUpdate, validateBlogIdParam, validateBlogSearchQuery } = require('../middlewares/blogValidation')
 const { handleInputError } = require('../middlewares/handleInputError')
 const UserService = require('../services/userService')
 const BlogService = require('../services/blogService')
@@ -36,6 +36,18 @@ router.get('/', validateBlogQuery, handleInputError, async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 5
 
     const blogs = await BlogService.getBlogsByPage(page, limit)
+    res.send(blogs)
+  } catch(err) {
+    next(err)
+  }
+})
+
+router.get('/search', validateBlogSearchQuery, handleInputError, async (req, res, next) => {
+  try {
+    const query = req.query.q
+
+    const blogs = await BlogService.searchBlogByTitle(query)
+
     res.send(blogs)
   } catch(err) {
     next(err)

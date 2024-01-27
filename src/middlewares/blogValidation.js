@@ -41,6 +41,14 @@ const validateBlogUpdate = [
 const validateBlogIdParam = [
   param('blogId')
     .custom(isValidObjectId).withMessage('Incorrect comment id format')
-] 
+]
 
-module.exports = { validateBlogPost, validateBlogQuery, validateBlogUpdate, validateBlogIdParam }
+const validateBlogSearchQuery = [
+  query('q')
+    .exists().withMessage('Query must exist')
+    .notEmpty().withMessage('Query is required')
+    .trim()
+    .isLength({ min: 2 }).withMessage('Query must be at least 2 character long')
+]
+
+module.exports = { validateBlogPost, validateBlogQuery, validateBlogUpdate, validateBlogIdParam, validateBlogSearchQuery }
