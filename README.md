@@ -157,7 +157,7 @@ npm run watch
 >```json
 > {
 >   "content": "sample content",
->   "blog": "65b359111fcf3d02b3d8f6a9" (blogId)
+>   "blog": "65b359111fcf3d02b3d8f6a9" (use your own blog id)
 > }
 >```
 ### Get comment by blog id
