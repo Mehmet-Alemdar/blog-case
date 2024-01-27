@@ -181,7 +181,7 @@ npm run watch
 > ```http
 > PATCH http://localhost:3000/comment/:commentId
 > ````
-> > Sample Request
+> Sample Request
 >```json
 > {
 >   "content": "sample content updated"
