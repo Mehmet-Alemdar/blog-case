@@ -1,4 +1,4 @@
-### To run this project
+# To run this project
 > Enter the project and type these in the terminal respectively and run
 ```
 npm install
@@ -6,7 +6,7 @@ npm install
 ```
 npm run watch
 ```
-## Usage
+# Usage
 ## User operations 🙍
 ### User create
 > ```http
@@ -47,9 +47,9 @@ npm run watch
 > }
 >```
 ### User update
-> Add token headers returned from API
-> ```json
-> authorization: (token) returned from api
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
 > ```
 > ```http
 > PATCH http://localhost:3000/user/update
@@ -63,6 +63,10 @@ npm run watch
 > }
 >```
 ### User password update
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > PATCH http://localhost:3000/user/change-password
 > ````
@@ -74,12 +78,20 @@ npm run watch
 > }
 >```
 ### User delete
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > DELETE http://localhost:3000/user/delete
 > ````
 
 ## Blog operations 📑
 ### Blog create
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > POST http://localhost:3000/blog
 > ````
@@ -100,6 +112,10 @@ npm run watch
 > GET http://localhost:3000/blog/:blogId
 > ````
 ### Update blog by blog id
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > PATCH http://localhost:3000/blog/:blogId
 > ````
@@ -112,16 +128,28 @@ npm run watch
 > }
 >```
 ### Like and unlike blog by blog id
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > PATCH http://localhost:3000/blog/like/:blogId
 > ````
 ### Delete blog by blog id
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > DELETE http://localhost:3000/blog/:blogId
 > ````
 
 ## Comment operations 🖊️
 ### Comment create
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > POST http://localhost:3000/comment
 > ````
@@ -141,6 +169,10 @@ npm run watch
 > GET http://localhost:3000/comment/user/:userId
 > ````
 ### Update comment by comment id
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > PATCH http://localhost:3000/comment/:commentId
 > ````
@@ -151,10 +183,18 @@ npm run watch
 > }
 >```
 ### Like and unlikecomment by comment id
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > PATCH http://localhost:3000/comment/like/:commentId
 > ````
 ### Delete comment by comment id
+> **⚠ Add the token information returned from the API to the headers.**
+> ```bash
+> authorization: token returned from api
+> ```
 > ```http
 > DELETE http://localhost:3000/comment/:commentId
 > ````
